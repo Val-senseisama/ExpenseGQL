@@ -1,4 +1,4 @@
-const mongoose = require('mongoose'); // Erase if already required
+import mongoose from "mongoose"; // Erase if already required
 
 // Declare the Schema of the Mongo model
 var userSchema = new mongoose.Schema({
@@ -28,4 +28,5 @@ var userSchema = new mongoose.Schema({
 }, {timestamps: true});
 
 //Export the model
-module.exports = mongoose.model('User', userSchema);
+const User = mongoose.model('User', userSchema);
+export default User;

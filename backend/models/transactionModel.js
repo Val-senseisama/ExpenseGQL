@@ -1,4 +1,4 @@
-const mongoose = require('mongoose'); // Erase if already required
+import mongoose from "mongoose";
 
 // Declare the Schema of the Mongo model
 var transactionSchema = new mongoose.Schema({
@@ -36,4 +36,5 @@ var transactionSchema = new mongoose.Schema({
 }, {timestamps: true});
 
 //Export the model
-module.exports = mongoose.model('Transaction', transactionSchema);
+const Transaction = mongoose.model('Transaction', transactionSchema);
+export default Transaction
