@@ -4,10 +4,10 @@ import bcrypt from "bcryptjs"
 
 const userResolver ={
     Mutation: {
-        signup: async (_, {input}, context) =>{
+        signUp: async (_, {input}, context) =>{
             try {
-                const {username, name, password, gender, email} = input;
-                if(!username || !name ||!password || !gender || !email){
+                const {username, name, password, gender} = input;
+                if(!username || !name ||!password || !gender){
                     throw new Error("All fields are required");
                 }
                 const existingUser = await User.findOne({username});
@@ -26,7 +26,7 @@ const userResolver ={
                     name,
                     password: hashedPassword,
                     gender,
-                    profilePicture: gender ==="male" ? boyProfilePic : girlProfilePic,
+                    profilePicture: gender === "male" ? boyProfilePic : girlProfilePic,
                 });
 
                 await newUser.save();
@@ -40,6 +40,8 @@ const userResolver ={
         login:async (_, {input}, context) => {
             try {
                 const {username, password} = input;
+                if(!username || ! password)  throw new Error("All fields are required");
+                
                 const {user} = await context.authenticate("graphql-local", {username, password})
 
                 await context.login(user);
@@ -54,10 +56,10 @@ const userResolver ={
         logout: async(p,a,context) =>{
             try {
                 await context.logout();
-                req.sessiom.destroy((err)=>{
+                context.req.session.destroy((err)=>{
                     if (err) throw err;
                 });
-                res.clearCookie("connect.sid");
+                context.res.clearCookie("connect.sid");
                 return {message: "Logged out sucessfully"};
 
             } catch (error) {
@@ -69,7 +71,7 @@ const userResolver ={
     },
 
     Query: {
-        authUser: async( p, a,{req,res}) => {
+        authUser: async( p, a,context) => {
             try {
                 const user = await context.getUser();
                 return user;

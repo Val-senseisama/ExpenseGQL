@@ -3,7 +3,6 @@ type User {
     _id:ID!
     username: String!
     name: String!
-    email: String
     password: String!
     profilePicture:String
     gender:String!
@@ -15,7 +14,7 @@ type Query {
 }
 
 type Mutation {
-    signup(input: SignUpInput!): User
+    signUp(input: SignUpInput!): User
     login(input: LoginInput!): User
     logout:LogoutResponse
 }
@@ -23,14 +22,13 @@ type Mutation {
 input SignUpInput{
     username:String!
     name:String!
-    email: String
     password:String!
     gender:String!
 }
 
 input LoginInput{
     username:String!
-    name:String!
+    password:String!
 }
 
 type LogoutResponse{
