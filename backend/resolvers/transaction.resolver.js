@@ -8,6 +8,7 @@ const transactionResolver = {
                 const userId = await context.getUser()._id;a
 
                 const transactions = await Transaction.find({userId});
+                console.log(userId);
                 return transactions;
             } catch (error) {
                 console.log("Error getting transactions:", error);
@@ -44,7 +45,9 @@ const transactionResolver = {
         },
         updateTransaction: async(_, {input}) => {
             try {
+              
                 const updatedTransaction = await Transaction.findByIdAndUpdate(input.transactionId, input, {new: true});
+                
                 return updatedTransaction
             } catch (error) {
                 console.log("Error updating transaction:", error);
