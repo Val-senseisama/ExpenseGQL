@@ -9,7 +9,7 @@ const transactionResolver = {
                 const userId = await context.getUser()._id;a
 
                 const transactions = await Transaction.find({userId});
-                console.log(userId);
+                
                 return transactions;
             } catch (error) {
                 console.log("Error getting transactions:", error);
