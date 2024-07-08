@@ -29,6 +29,10 @@ const store = new MongoDBStore({
 });
 
 store.on("error", (err) => console.log(err));
+
+app.use(express.json()); // Parse JSON bodies
+app.use(express.urlencoded({ extended: true }));
+
 app.use(session({
     secret:process.env.SESSION_SECRET,
     resave: false,

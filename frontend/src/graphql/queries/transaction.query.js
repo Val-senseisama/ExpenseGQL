@@ -24,6 +24,22 @@ query GetTransaction($id:ID!){
         amount
         location
         date
+        user{
+            _id
+            username
+            name
+            profilePicture
+        }
     }
 }
+`;
+
+
+export const GET_TRANSACTION_STATISTICS = gql`
+	query GetTransactionStatistics {
+		categoryStatistics {
+			category
+			totalAmount
+		}
+	}
 `;

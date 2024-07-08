@@ -9,3 +9,5 @@ export const connectDB = async () =>{
         process.exit(1);
     }
 }
+
+//updated the connectDB function to use the MONGODB_URI environment variable for live db

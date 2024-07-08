@@ -6,23 +6,26 @@ import { FaTrash } from "react-icons/fa";
 import { HiPencilAlt } from "react-icons/hi";
 import { Link } from "react-router-dom";
 import { formatDate } from "../utils/formatDate.js";
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { DELETE_TRANSACTION } from "../graphql/mutations/transactions.mutation.js";
 import toast from "react-hot-toast";
+import { GET_AUTHENTICATED_USER } from "../graphql/queries/user.query.js";
 
 const categoryColorMap = {
 	saving: "from-green-700 to-green-400",
 	expense: "from-pink-800 to-pink-600",
 	investment: "from-blue-700 to-blue-400",
-	// Add more categories and corresponding color classes as needed
 };
 
-const Card = ({ transaction }) => {
+const Card = ({ transaction, authUser }) => {
 	
 	let { category, amount, location, date, paymentType, description} = transaction;
 	
 	const cardClass = categoryColorMap[category];
 
+	const [deleteTransaction, {loading}] = useMutation(DELETE_TRANSACTION, {
+		refetchQueries:["GetTransactions", "GetTransactionStatistics"]
+	});
 
 	description = description[0]?.toUpperCase() + description.slice(1);
 	category = category[0]?.toUpperCase() + category.slice(1);
@@ -30,9 +33,7 @@ const Card = ({ transaction }) => {
 	
 	const formattedDate = formatDate(date);
 	
-	const [deleteTransaction, {loading}] = useMutation(DELETE_TRANSACTION, {
-		refetchQueries:["GetTransactions"]
-	});
+	
 
 	const handleDelete = async() =>{
 		try {
@@ -76,7 +77,7 @@ const Card = ({ transaction }) => {
 				<div className='flex justify-between items-center'>
 					<p className='text-xs text-black font-bold'>{formattedDate}</p>
 					<img
-						src={"https://tecdn.b-cdn.net/img/new/avatars/2.webp"}
+						src={authUser.profilePicture}
 						className='h-8 w-8 border rounded-full'
 						alt=''
 					/>
